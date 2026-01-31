@@ -1,0 +1,132 @@
+.bebas-neue-regular {
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  
+}
+
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+h1{
+    font-family: Bebas Neue;
+    letter-spacing: 2px;
+}
+
+body{
+    background-color: #262625;
+    width: 100vw;
+    gap: 30px;
+}
+
+#container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+header {
+    display: flex;
+    background-color: #832b30;
+    width: 100vw;
+    height: 15vh;
+    padding: 20px;
+    justify-content: flex-start;
+    gap: 10px;
+    border: solid #4d4d4d 2px;
+}
+
+header h1{
+    align-self: center;
+    font-size: 9vmin;
+    height: auto;
+    width: auto;
+    color: #262625;
+    -webkit-text-stroke-width: 0.01rem;
+    -webkit-text-stroke-color: #4d4d4d;
+    
+}
+
+main{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+#logocabecalho {
+    width: auto;
+    height: auto;
+}
+
+#fichas{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+
+    width: 100vw;
+    height: auto;
+    
+}
+
+.trocaficha{
+    width: 10rem;
+    height: 3rem;
+
+    font-size: 1.5rem;
+    font-family: Bebas Neue;
+    letter-spacing: 1px;
+    color:#262625;
+    -webkit-text-stroke-width: 0.01rem;
+    -webkit-text-stroke-color: #4d4d4d;
+    transition: all 0.15s ease;
+
+    background-color: #832b30;
+    border-radius: 5px;
+    border: #4d4d4d solid 1px;
+}
+
+.trocaficha:hover{
+    transform: scale(1.1);
+
+}
+
+.trocaficha:active{
+    transform: scale(0.95);
+}
+
+#addexercicio{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: auto;
+    gap: 0;
+}
+
+#btnadd{
+    height: 2.5rem;
+
+    font-size: 1.5rem;
+    font-family: Bebas Neue;
+    letter-spacing: 1px;
+    color:#262625;
+    -webkit-text-stroke-width: 0.01rem;
+    -webkit-text-stroke-color: #4d4d4d;
+    transition: all 0.15s ease;
+
+    background-color: #832b30;
+    border-radius: 5px;
+    border: #4d4d4d solid 1px;
+}
+#btnadd:hover{
+    transform: scale(1.1);
+
+}
+#btnadd:active{
+    transform: scale(0.95);
+}
