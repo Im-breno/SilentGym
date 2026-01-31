@@ -25,39 +25,33 @@
             </div>
 
             <div id="addexercicio">
-                <Button id="btnadd" type="button">|+| Adicionar Exercício</Button>
+                <Button id="btnadd" type="button">|+|Adicionar Exercício</Button>
             </div>
 
             
         </main>
         
-        <!--
-        <div id="novoexercicio">
-            <div id="tituloNE">
-                <h1> Adicionar Exercicio</h1>
+        <div id="containernovoexercicio" class="oculto">
+            <div id="fundopreto"></div>
+            <div id="novoexercicio">
+                <div id="tituloNE">
+                    <h1> Configurar Exercício </h1>
+                </div>
+
+                <label for="inserirnome">Nome: <input type="text" maxlength="30" name="Nome" id="inserirnome"></label>
+
+                <label for="nrep">Repetições: <input type="number" min="0" name="nrep" id="nrep"></label>
+                
+                <label for="fotoInput">Escolher Foto<input type="file" id="fotoInput" accept="image/*" class="mudafoto"></label>
+                <img id="previewimg" src="" alt="preview da imagem">
+
+                <button id="fecharNE" type="button">Finalizar</button>
+                    
+                
             </div>
-
-            <label for="inserirnome">Nome: </label>
-            <input type="text" name="Nome" id="inserirnome">
-
-            <label for="inserirnrep">Repetições</label>
-            <input type="number" name="nrep" id="nrep">
-
-            <label for="linkfoto">Link: </label>
-            <input type="url" name="linkfoto" id="linkfoto">
-
-
-            <button type="button">Finalizar</button>
-                
-                Importar imagem
-                
-            <input type="file" id="fotoInput" accept="image/*" style="display: none;">
-            <label for="fotoInput">
-                Escolher Foto
-            </label>
         </div>
-         -->
+        
     </div>
 </body>
-<script src="js/script.js"></script>
+<script src="js/script.js" defer></script>
 </html>
