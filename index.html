@@ -31,6 +31,7 @@
             
         </main>
         
+        <!--* Aba de adicionar um novo exercicio -->
         <div id="containernovoexercicio" class="oculto">
             <div id="fundopreto"></div>
             <div id="novoexercicio">
@@ -43,13 +44,16 @@
                 <label for="nrep">Repetições: <input type="number" min="0" name="nrep" id="nrep"></label>
                 
                 <label for="fotoInput">Escolher Foto<input type="file" id="fotoInput" accept="image/*" class="mudafoto"></label>
-                <img id="previewimg" src="" alt="preview da imagem">
+                
+                <div id="previewimgdiv">
+                    <img id="previewimg" src="" alt="preview da imagem">
+                    <button type="button" id="botaoapagarfoto" class="oculto"> <img src="img/apagarfotoicone.png" alt="Apagar foto" id="apagarfoto"></button>
+                </div>
 
                 <button id="fecharNE" type="button">Finalizar</button>
-                    
-                
             </div>
         </div>
+        <!--* Aba de adicionar um novo exercicio -->
         
     </div>
 </body>

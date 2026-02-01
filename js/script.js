@@ -18,18 +18,24 @@
 //! **após fazer o layout do exercicio, criar o codigo para Salvar.**
 
 //* Preview da Imagem
-let previewLinkEl = document.querySelectorAll('.linkfoto')// Link que adiciona a foto
 let previewInputEl = document.querySelector("#fotoInput"); // Botao que adiciona a imagem
 let imgPreviewEl = document.querySelector('#previewimg');// Preview da imagem
+let botaoApagarImgEl = document.querySelector('#botaoapagarfoto'); //Botao que apaga foto
 
-
-function previewLink(e){
-    imgPreviewEl.src = previewLinkEl.values
-}
+function AlternaBotaoApagarImg(){
+    botaoApagarImgEl.classList.toggle('oculto');
+}   //alterna o estado de visibilidade do botao de apagar a foto
 
 function previewImportar (e){
-    imgPreviewEl.src = URL.createObjectURL(e.target.files[0]);
+    imgPreviewEl.src = URL.createObjectURL(e.target.files[0]); //importa a imagem
+    AlternaBotaoApagarImg(); //deixa o botao de apagar visíveç
 }
 
-previewInputEl.addEventListener('change', previewImportar);
-previewLinkEl.addEventListener('change', previewLink)
+function previewImportarRemover(){
+    imgPreviewEl.src = ''   //exclui a imagem
+    AlternaBotaoApagarImg();    //some com o botao de apagar imagem
+}
+
+previewInputEl.addEventListener('change', previewImportar); //evento pro upload da imagem
+
+botaoApagarImgEl.addEventListener('click', previewImportarRemover); //evento pra remover a imagem
