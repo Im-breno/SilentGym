@@ -28,6 +28,32 @@
                 <Button id="btnadd" type="button">|+|Adicionar Exercício</Button>
             </div>
 
+
+            <!--!  Visoes de desafio adiante -->
+            <div id="listaexercicios">
+                <div class="exercicio">
+
+                    <div class="imgEx"> <img class="imgexercicio" src="img/imgteste.png" alt="Imagem do exercicio"> </div>
+                    <div class="nomeEx">
+                        <h2>Nome</h2>
+                        <p>Legpress</p>
+                    </div>
+
+                    <div class="KgEx">
+                        <h2>Kg</h2>
+                        <p>120</p>
+                    </div>
+
+                    <div class="RepEx">
+                        <h2>Rep.</h2>
+                        <p>10</p>
+                    </div>
+
+                    <div class="checkboxEx"> <input type="checkbox" name="checkboxEx" class="checkboxEl"> </div>
+            <!--!  Visoes de desafio adiante -->
+
+                </div>
+            </div>
             
         </main>
         
@@ -41,7 +67,9 @@
 
                 <label for="inserirnome">Nome: <input type="text" maxlength="30" name="Nome" id="inserirnome"></label>
 
-                <label for="nrep">Repetições: <input type="number" min="0" name="nrep" id="nrep"></label>
+                <label for="nrep">Repetições: <input type="text" maxlength="30" name="nrep" id="nrep"></label>
+
+                <label for="nrep">Carga: <input type="number" min="0" name="kg" id="kg"></label>
                 
                 <label for="fotoInput">Escolher Foto<input type="file" id="fotoInput" accept="image/*" class="mudafoto"></label>
                 
