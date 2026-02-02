@@ -159,7 +159,9 @@ main{
     display: flex;
     flex-wrap: wrap;
     width: 30vw;
+    min-width: 400px;
     height: 70vh;
+    min-height: 500px;
     flex-direction: column;
     gap: 10px;
     z-index: 2;
@@ -301,6 +303,7 @@ label[for="fotoInput"]{
     position: relative;
     aspect-ratio: 1/1;
     width: 15%;
+    min-width: 200px;
     grid-template-rows: repeat(3, 1fr);
     background-color:#4d4d4d;
     border:#cacaca 2px solid;
