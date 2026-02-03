@@ -4,6 +4,10 @@
   font-style: normal;
 }
 
+@media only screen and (hover: none) and (pointer: coarse) {
+  
+}
+
 
 * {
     margin: 0;
@@ -395,6 +399,11 @@ label[for="fotoInput"]{
     flex: 1;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.editarexercicio button:hover{
+    transform: scale(1.1);
 }
 
 .editarexercicio img{
@@ -405,4 +414,15 @@ label[for="fotoInput"]{
     object-fit: cover;
     border: none !important;
     z-index: 10;
+}
+
+.exercicio .editarexercicio{
+    transform: scale(0);
+    pointer-events: none;
+    transition: 0.1s;
+}
+
+.exercicio:hover .editarexercicio{
+    transform: scale(1);
+    pointer-events: auto;
 }

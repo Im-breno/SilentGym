@@ -1,8 +1,14 @@
 'use strict'
 
+function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+} //*Verifica se é mobile
+
 //* Preview da Imagem
 let previewInputEl = document.querySelector("#fotoInput"); // Botao que adiciona a imagem
+
 let imgPreviewEl = document.querySelector('#previewimg');// Preview da imagem
+
 let botaoApagarImgEl = document.querySelector('#botaoapagarfoto'); //Botao que apaga foto
 let urlImgAtual
 
@@ -30,6 +36,7 @@ botaoApagarImgEl.addEventListener('click', previewImportarRemover); //evento pra
 //* Faz aparecer e sumir a aba de configurar exercicio
 
 let addExercicioBotaoEl = document.querySelector("#addexercicio"); //Botao de criar exercicio
+
 let containerNovoExercicioEl = document.querySelector("#containernovoexercicio"); // Container de criar novo exercicio
 
 addExercicioBotaoEl.addEventListener('click', ()=>{
@@ -41,7 +48,11 @@ let fundoPretoEl = document.querySelector("#fundopreto"); // Elemento do fundo p
 fundoPretoEl.addEventListener('click', ()=>{
     containerNovoExercicioEl.classList.toggle("oculto")
 })
+let listaExEl = document.querySelector('#listaexercicios'); // container da lista
 
+const exerciciosEl = listaExEl.children; //Os exercicios colocados vao estar aqui;
+
+let editarExercicioEl = document.querySelectorAll('.editarexercicio');
 
 let NomeExEl = document.querySelector('#inserirnome');
 let nRepExEl = document.querySelector('#nrep');
@@ -49,12 +60,12 @@ let cargaExEl = document.querySelector('#kg');
 
 let botaoFecharEl = document.querySelector('#fecharNE');
 
+
+//* Cria um novo exercicio
 botaoFecharEl.addEventListener('click', ()=> {
     let nome = NomeExEl.value;
     let nRep = nRepExEl.value;
     let carga = cargaExEl.value;
-
-    let listaExEl = document.querySelector('#listaexercicios');
 
     let divExEl = document.createElement('div');
     divExEl.classList.add('exercicio'); // Cria a div do exercicio novo
@@ -117,29 +128,45 @@ botaoFecharEl.addEventListener('click', ()=> {
     divCheckBoxExEl.appendChild(checkBoxExEl);
 
     let divEditarExEl = document.createElement('div');
-    divEditarExEl.classList.add('editarexercicio'); //! adicionar a classe oculto dps
-    divEditarExEl.classList.add('oculto');
+    divEditarExEl.classList.add('editarexercicio');
     divExEl.appendChild(divEditarExEl);  //adiciona a div do editar
 
     let botaoExcluir = document.createElement('button');
-    botaoExcluir.type = 'button';
+    botaoExcluir.type = 'button'; //cria o botao de excluir
     botaoExcluir.classList.add('excluirEx');
     divEditarExEl.appendChild(botaoExcluir);
 
     let imgExcluir = document.createElement('img');
-    imgExcluir.alt = 'Excluir foto';
+    imgExcluir.alt = 'Excluir Exercicio'; // Cria a imagem do botao de excluir
     imgExcluir.src = 'img/apagarfotoicone.png';
     botaoExcluir.appendChild(imgExcluir);
 
     let botaoEditar = document.createElement('button');
-    botaoEditar.type = 'button';
+    botaoEditar.type = 'button';    //Cria o botao de editar
     botaoEditar.classList.add('editarEx');
     divEditarExEl.appendChild(botaoEditar);
 
     let imgEditar = document.createElement('img');
-    imgEditar.alt = 'Editar foto';
+    imgEditar.alt = 'Editar foto';  // Cria a imagem de do botao editar
     imgEditar.src = 'img/editarExicone.png';
     botaoEditar.appendChild(imgEditar);
-})
 
-//fazer função para zerar as informações do editar exercicio
+    NomeExEl.value = '';
+    nRepExEl.value = ''; // reseta as informações do editar imagem
+    cargaExEl.value = '';
+
+    previewImportarRemover();
+    containerNovoExercicioEl.classList.toggle("oculto"); // Esconde a aba de gerenciar
+
+    editarExercicioEl = document.querySelectorAll('.editarexercicio');
+})
+//* Cria um novo exercicio
+
+    listaExEl.addEventListener('click', (e) => {
+        const btnExcluir = e.target.closest('.excluirEx');
+        if (!btnExcluir) return;
+    
+        const card = btnExcluir.closest('.exercicio');
+        if (card) card.remove();
+    });
+
