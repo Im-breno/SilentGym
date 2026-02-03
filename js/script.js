@@ -103,18 +103,43 @@ botaoFecharEl.addEventListener('click', ()=> {
     divRepExEl.appendChild(repH2El)
 
     let repPEl = document.createElement('p');
-    repPEl.textContent = carga; // Adiciona a rep
+    repPEl.textContent = nRep; // Adiciona a rep
     divRepExEl.appendChild(repPEl);
 
     let divCheckBoxExEl = document.createElement('div');
-    divCheckBoxExEl.classList.add('checkboxEx');
+    divCheckBoxExEl.classList.add('checkboxEx'); // Adiciona a div da checkbox
     divExEl.appendChild(divCheckBoxExEl);
 
     let checkBoxExEl = document.createElement('input');
     checkBoxExEl.type = "checkbox";
-    checkBoxExEl.name = "checkboxEx";
+    checkBoxExEl.name = "checkboxEx";   // Adiciona a checkbox
     checkBoxExEl.classList.add('checkboxEx');
     divCheckBoxExEl.appendChild(checkBoxExEl);
+
+    let divEditarExEl = document.createElement('div');
+    divEditarExEl.classList.add('editarexercicio'); //! adicionar a classe oculto dps
+    divEditarExEl.classList.add('oculto');
+    divExEl.appendChild(divEditarExEl);  //adiciona a div do editar
+
+    let botaoExcluir = document.createElement('button');
+    botaoExcluir.type = 'button';
+    botaoExcluir.classList.add('excluirEx');
+    divEditarExEl.appendChild(botaoExcluir);
+
+    let imgExcluir = document.createElement('img');
+    imgExcluir.alt = 'Excluir foto';
+    imgExcluir.src = 'img/apagarfotoicone.png';
+    botaoExcluir.appendChild(imgExcluir);
+
+    let botaoEditar = document.createElement('button');
+    botaoEditar.type = 'button';
+    botaoEditar.classList.add('editarEx');
+    divEditarExEl.appendChild(botaoEditar);
+
+    let imgEditar = document.createElement('img');
+    imgEditar.alt = 'Editar foto';
+    imgEditar.src = 'img/editarExicone.png';
+    botaoEditar.appendChild(imgEditar);
 })
 
 //fazer função para zerar as informações do editar exercicio
