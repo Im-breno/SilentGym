@@ -46,7 +46,13 @@ addExercicioBotaoEl.addEventListener('click', ()=>{
 let fundoPretoEl = document.querySelector("#fundopreto"); // Elemento do fundo preto
 
 fundoPretoEl.addEventListener('click', ()=>{
-    containerNovoExercicioEl.classList.toggle("oculto")
+    if (estaEditando) {
+        criaExercicio();
+        // criaExercicio já faz um toggle; garantir que a aba fique escondida
+        containerNovoExercicioEl.classList.add("oculto");
+        return;
+    }
+    containerNovoExercicioEl.classList.toggle("oculto");
 })
 let listaExEl = document.querySelector('#listaexercicios'); // container da lista
 
@@ -54,22 +60,32 @@ const exerciciosEl = listaExEl.children; //Os exercicios colocados vao estar aqu
 
 let editarExercicioEl = document.querySelectorAll('.editarexercicio');
 
+// Estado para edição: guarda o nextSibling para re-inserir no mesmo local
+let estaEditando = false;
+let editaProximoSibling = null;
+
 let NomeExEl = document.querySelector('#inserirnome');
 let nRepExEl = document.querySelector('#nrep');
 let cargaExEl = document.querySelector('#kg');
 
 let botaoFecharEl = document.querySelector('#fecharNE');
 
-
-//* Cria um novo exercicio
-botaoFecharEl.addEventListener('click', ()=> {
+function criaExercicio(){
     let nome = NomeExEl.value;
     let nRep = nRepExEl.value;
     let carga = cargaExEl.value;
 
     let divExEl = document.createElement('div');
     divExEl.classList.add('exercicio'); // Cria a div do exercicio novo
-    listaExEl.appendChild(divExEl);
+
+    if (estaEditando) {
+        if (editaProximoSibling) listaExEl.insertBefore(divExEl, editaProximoSibling);
+        else listaExEl.appendChild(divExEl);
+        estaEditando = false;
+        editaProximoSibling = null;
+    } else {
+        listaExEl.appendChild(divExEl);
+    }
 
     let divImgExEl = document.createElement('div');
     divImgExEl.classList.add('imgEx'); // Cria a div da imagem
@@ -159,7 +175,10 @@ botaoFecharEl.addEventListener('click', ()=> {
     containerNovoExercicioEl.classList.toggle("oculto"); // Esconde a aba de gerenciar
 
     editarExercicioEl = document.querySelectorAll('.editarexercicio');
-})
+}
+
+//* Cria um novo exercicio
+botaoFecharEl.addEventListener('click', criaExercicio)
 //* Cria um novo exercicio
 
     listaExEl.addEventListener('click', (e) => {
@@ -170,3 +189,33 @@ botaoFecharEl.addEventListener('click', ()=> {
         if (card) card.remove();
     });
 
+    listaExEl.addEventListener('click', (e) => {
+        const btnEditar = e.target.closest('.editarEx');
+        if (!btnEditar) return;
+
+        const exercicio = btnEditar.closest('.exercicio');
+        if (!exercicio) return;
+
+        const nomePEl = exercicio.querySelector('.nomeEx p');
+        const kgPEl = exercicio.querySelector('.KgEx p');
+        const repPEl = exercicio.querySelector('.RepEx p');
+        const imgExEl = exercicio.querySelector('.imgexercicio');
+
+        if (nomePEl) NomeExEl.value = nomePEl.textContent;
+        if (kgPEl) cargaExEl.value = kgPEl.textContent;
+        if (repPEl) nRepExEl.value = repPEl.textContent;
+
+        // Guarda a posição para re-inserir no mesmo local
+        editaProximoSibling = exercicio.nextElementSibling;
+        estaEditando = true;
+
+        // Usa a imagem do exercício para preview/para recriar
+        if (imgExEl && imgExEl.src) {
+            urlImgAtual = imgExEl.src;
+            imgPreviewEl.src = urlImgAtual;
+            botaoApagarImgEl.classList.remove('oculto');
+        }
+
+        containerNovoExercicioEl.classList.remove("oculto");
+        exercicio.remove();
+    });
