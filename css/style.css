@@ -285,7 +285,7 @@ label[for="fotoInput"]{
     z-index: 10;
 }
 
-#listaexercicios{
+.listaexercicios{
     width: 100%;
     height: auto;
 
