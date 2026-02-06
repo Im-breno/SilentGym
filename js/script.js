@@ -51,9 +51,7 @@ fundoPretoEl.addEventListener('click', ()=>{
     }
     containerNovoExercicioEl.classList.toggle("oculto");
 })
-let lista = document.querySelectorAll('.listaexercicios'); // container da lista
-
-const exerciciosEl = lista.children; //Os exercicios colocados vao estar aqui;
+let lista = Array.from(document.querySelectorAll('.listaexercicios')); // container da lista
 
 let editarExercicioEl = document.querySelectorAll('.editarexercicio');
 
@@ -67,21 +65,25 @@ let cargaExEl = document.querySelector('#kg');
 
 let botaoFecharEl = document.querySelector('#fecharNE');
 
-function criaExercicio(){
-        let nome = NomeExEl.value;
-        let nRep = nRepExEl.value;
-        let carga = cargaExEl.value;
+function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage) {
+        nome = nome || NomeExEl.value;
+        nRep = nRep || nRepExEl.value;
+        carga = carga || cargaExEl.value;
+        ficha = ficha !== undefined ? ficha : fichaAtual;
+        if (urlImg) urlImgAtual = urlImg;
 
         let divExEl = document.createElement('div');
         divExEl.classList.add('exercicio'); // Cria a div do exercicio novo
 
         if (estaEditando) {
-            if (editaProximoSibling) lista[fichaAtual].insertBefore(divExEl, editaProximoSibling);
-            else lista[fichaAtual].appendChild(divExEl);
+            localStorage = false;
+
+            if (editaProximoSibling) lista[ficha].insertBefore(divExEl, editaProximoSibling);
+            else lista[ficha].appendChild(divExEl);
             estaEditando = false;
             editaProximoSibling = null;
         } else {
-            lista[fichaAtual].appendChild(divExEl);
+            lista[ficha].appendChild(divExEl);
         }
 
         let divImgExEl = document.createElement('div');
@@ -169,15 +171,23 @@ function criaExercicio(){
         cargaExEl.value = '';
 
         previewImportarRemover();
-        containerNovoExercicioEl.classList.toggle("oculto"); // Esconde a aba de gerenciar
+        containerNovoExercicioEl.classList.add("oculto"); // Esconde a aba de gerenciar
 
         botaoApagarImgEl.classList.add('oculto');
 
         editarExercicioEl = document.querySelectorAll('.editarexercicio');
+        
+        let exercicioId;
+        if(localStorage !== true) {
+            exercicioId = salvaExLocalStorage(fichaAtual, nome, nRep, carga, urlImgAtual);
+            divExEl.dataset.id = exercicioId;
+        }
 }
 
 //* Cria um novo exercicio
-botaoFecharEl.addEventListener('click', criaExercicio)
+botaoFecharEl.addEventListener('click', () => {
+    criaExercicio(undefined, undefined, undefined, undefined, fichaAtual, false);
+})
 //* Cria um novo exercicio
 
 lista.forEach((listaEl) => {
@@ -186,7 +196,13 @@ lista.forEach((listaEl) => {
         if (!btnExcluir) return;
     
         const card = btnExcluir.closest('.exercicio');
-        if (card) card.remove();
+        if (card) {
+            const exercicioId = card.dataset.id;
+            if (exercicioId) {
+                excluiExercicioEspecificoLocalStorage(parseFloat(exercicioId));
+            }
+            card.remove();
+        }
     });
 
     listaEl.addEventListener('click', (e) => {
@@ -208,6 +224,12 @@ lista.forEach((listaEl) => {
         // Guarda a posição para re-inserir no mesmo local
         editaProximoSibling = exercicio.nextElementSibling;
         estaEditando = true;
+
+        // Remove o exercício do localStorage antes de remover do DOM
+        const exercicioId = exercicio.dataset.id;
+        if (exercicioId) {
+            excluiExercicioEspecificoLocalStorage(parseFloat(exercicioId));
+        }
 
         // Usa a imagem do exercício para preview/para recriar
         if (imgExEl && imgExEl.src) {
@@ -231,3 +253,46 @@ for (let i = 0; i < trocarFichaBotaoEl.length; i++) {
         fichaAtual = i;
         lista[fichaAtual].classList.remove('oculto');
     })}
+
+function salvaExLocalStorage(ficha, nome, nRep, carga, urlImg) {
+
+    let exercicios = JSON.parse(localStorage.getItem('exercicios')) || [];
+
+    const novo = {
+        id: Date.now() + Math.random(),
+        ficha: ficha,
+        nome: nome,
+        nRep: nRep,
+        carga: carga,
+        urlImg: urlImg
+    };
+
+    exercicios.push(novo);
+
+    localStorage.setItem('exercicios', JSON.stringify(exercicios));
+    return novo.id;
+}
+
+window.onload = carregaExerciciosLocalStorage();
+
+function carregaExerciciosLocalStorage() {
+    let exercicios = JSON.parse(localStorage.getItem('exercicios')) || [];
+
+    exercicios.forEach(exercicio => {
+            criaExercicio(exercicio.nome, exercicio.nRep, exercicio.carga, exercicio.urlImg, exercicio.ficha, true);
+            // Atualiza o ID do exercício criado
+            let exerciciosCriados = document.querySelectorAll('.exercicio');
+            let ultimoExercicio = exerciciosCriados[exerciciosCriados.length - 1];
+            if (ultimoExercicio) ultimoExercicio.dataset.id = exercicio.id;
+    });
+}
+
+
+function excluiExercicioEspecificoLocalStorage(id) {
+    let exercicios = JSON.parse(localStorage.getItem('exercicios')) || [];
+
+    exercicios = exercicios.filter(exercicio => exercicio.id !== id);
+
+    localStorage.setItem('exercicios', JSON.stringify(exercicios));
+}
+
