@@ -8,20 +8,35 @@ let imgPreviewEl = document.querySelector('#previewimg');// Preview da imagem
 let botaoApagarImgEl = document.querySelector('#botaoapagarfoto'); //Botao que apaga foto
 let urlImgAtual
 
-function AlternaBotaoApagarImg(){
-    botaoApagarImgEl.classList.toggle('oculto');
+function ApareceBotaoApagarImg(){
+    botaoApagarImgEl.classList.remove('oculto');
 }   //alterna o estado de visibilidade do botao de apagar a foto
+
+function EscondeBotaoApagarImg(){
+    botaoApagarImgEl.classList.add('oculto');
+} 
 
 function previewImportar (e){
     if (!e.target.files[0]) return;
-    urlImgAtual = URL.createObjectURL(e.target.files[0])
-    imgPreviewEl.src = urlImgAtual; //importa a imagem
-    AlternaBotaoApagarImg(); //deixa o botao de apagar visíveç
+    let arquivo = e.target.files[0]
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        urlImgAtual = event.target.result; // Guarda a URL da imagem
+
+         //importa a imagem
+        imgPreviewEl.src = urlImgAtual;
+
+    }
+
+    reader.readAsDataURL(arquivo);
+    
+    ApareceBotaoApagarImg(); //deixa o botao de apagar visíveç
 }
 
 function previewImportarRemover(){
     imgPreviewEl.src = ''   //exclui a imagem
-    AlternaBotaoApagarImg();    //some com o botao de apagar imagem
+    EscondeBotaoApagarImg();    //some com o botao de apagar imagem
 }
 
 previewInputEl.addEventListener('change', previewImportar); //evento pro upload da imagem
