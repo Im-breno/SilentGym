@@ -52,6 +52,9 @@ let addExercicioBotaoEl = document.querySelector("#addexercicio"); //Botao de cr
 let containerNovoExercicioEl = document.querySelector("#containernovoexercicio"); // Container de criar novo exercicio
 
 addExercicioBotaoEl.addEventListener('click', ()=>{
+    if (!estaEditando) {
+        urlImgAtual = ''; // Reseta a imagem ao abrir nova ficha
+    }
     containerNovoExercicioEl.classList.toggle("oculto")
 }) // Faz o container de criar novo execicio aparecer;
 
@@ -60,17 +63,24 @@ let fundoPretoEl = document.querySelector("#fundopreto"); // Elemento do fundo p
 fundoPretoEl.addEventListener('click', ()=>{
     if (estaEditando) {
         criaExercicio();
-        // criaExercicio já faz um toggle; garantir que a aba fique escondida
         containerNovoExercicioEl.classList.add("oculto");
         return;
     }
+
+    NomeExEl.value = '';
+    nRepExEl.value = '';
+    cargaExEl.value = '';
+    imgPreviewEl.src = '';
+    urlImgAtual = ''; // Reseta a imagem ao cancelar
+    if(botaoApagarImgEl.classList.contains('oculto') === false) botaoApagarImgEl.classList.add('oculto');
+
     containerNovoExercicioEl.classList.toggle("oculto");
 })
 let lista = Array.from(document.querySelectorAll('.listaexercicios')); // container da lista
 
 let editarExercicioEl = document.querySelectorAll('.editarexercicio');
 
-// Estado para edição: guarda o nextSibling para re-inserir no mesmo local
+// guarda o proximo Sibling para re inserir no mesmo local
 let estaEditando = false;
 let editaProximoSibling = null;
 
@@ -154,7 +164,7 @@ function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage) {
         let checkBoxExEl = document.createElement('input');
         checkBoxExEl.type = "checkbox";
         checkBoxExEl.name = "checkboxEx";   // Adiciona a checkbox
-        checkBoxExEl.classList.add('checkboxEx');
+        checkBoxExEl.classList.add("checkboxBtn");
         divCheckBoxExEl.appendChild(checkBoxExEl);
 
         let divEditarExEl = document.createElement('div');
@@ -184,6 +194,7 @@ function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage) {
         NomeExEl.value = '';
         nRepExEl.value = ''; // reseta as informações do editar imagem
         cargaExEl.value = '';
+        
 
         previewImportarRemover();
         containerNovoExercicioEl.classList.add("oculto"); // Esconde a aba de gerenciar
@@ -197,6 +208,8 @@ function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage) {
             exercicioId = salvaExLocalStorage(fichaAtual, nome, nRep, carga, urlImgAtual);
             divExEl.dataset.id = exercicioId;
         }
+
+        urlImgAtual = ''; // Reseta a imagem após criar o exercício
 }
 
 //* Cria um novo exercicio
@@ -236,7 +249,7 @@ lista.forEach((listaEl) => {
         if (kgPEl) cargaExEl.value = kgPEl.textContent;
         if (repPEl) nRepExEl.value = repPEl.textContent;
 
-        // Guarda a posição para re-inserir no mesmo local
+        // Guarda a posição para re inserir no mesmo local
         editaProximoSibling = exercicio.nextElementSibling;
         estaEditando = true;
 
@@ -265,8 +278,13 @@ let fichaAtual = 0;
 for (let i = 0; i < trocarFichaBotaoEl.length; i++) {
     trocarFichaBotaoEl[i].addEventListener('click', () => {
         lista[fichaAtual].classList.add('oculto');
+        trocarFichaBotaoEl[fichaAtual].classList.remove('fichaAtual');
+
         fichaAtual = i;
         lista[fichaAtual].classList.remove('oculto');
+        trocarFichaBotaoEl[fichaAtual].classList.add('fichaAtual');
+
+        localStorage.setItem('fichaAtual', JSON.stringify(fichaAtual));
     })}
 
 function salvaExLocalStorage(ficha, nome, nRep, carga, urlImg) {
@@ -288,7 +306,10 @@ function salvaExLocalStorage(ficha, nome, nRep, carga, urlImg) {
     return novo.id;
 }
 
-window.onload = carregaExerciciosLocalStorage();
+window.onload = () => {
+    carregaExerciciosLocalStorage();
+    carregaFichaAtual();
+}
 
 function carregaExerciciosLocalStorage() {
     let exercicios = JSON.parse(localStorage.getItem('exercicios')) || [];
@@ -309,5 +330,29 @@ function excluiExercicioEspecificoLocalStorage(id) {
     exercicios = exercicios.filter(exercicio => exercicio.id !== id);
 
     localStorage.setItem('exercicios', JSON.stringify(exercicios));
+}
+
+
+
+function carregaFichaAtual() {
+    let fichaSalva = JSON.parse(localStorage.getItem('fichaAtual'));
+    if (fichaSalva !== null) {
+        fichaAtual = fichaSalva;
+        lista.forEach((listaEl, index) => {
+            if (index === fichaAtual) {
+                listaEl.classList.remove('oculto');
+            } else {
+                listaEl.classList.add('oculto');
+            }
+        });
+    }
+
+        trocarFichaBotaoEl.forEach((btn, index) => {
+            if (index === fichaAtual) {
+                btn.classList.add('fichaAtual');
+            } else {
+                btn.classList.remove('fichaAtual');
+            }
+        });
 }
 
