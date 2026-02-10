@@ -163,7 +163,7 @@ function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage) {
 
         let checkBoxExEl = document.createElement('input');
         checkBoxExEl.type = "checkbox";
-        checkBoxExEl.name = "checkboxEx";   // Adiciona a checkbox
+        checkBoxExEl.name = "checkboxBtn";   // Adiciona a checkbox
         checkBoxExEl.classList.add("checkboxBtn");
         divCheckBoxExEl.appendChild(checkBoxExEl);
 
@@ -277,6 +277,14 @@ let fichaAtual = 0;
 
 for (let i = 0; i < trocarFichaBotaoEl.length; i++) {
     trocarFichaBotaoEl[i].addEventListener('click', () => {
+        if (i === fichaAtual) return;
+
+        let chechboxFichaAtual = lista[fichaAtual].querySelectorAll('.checkboxBtn');
+
+        for (let j = 0; j < chechboxFichaAtual.length; j++) {
+            chechboxFichaAtual[j].checked = false;
+        }
+
         lista[fichaAtual].classList.add('oculto');
         trocarFichaBotaoEl[fichaAtual].classList.remove('fichaAtual');
 
@@ -356,3 +364,21 @@ function carregaFichaAtual() {
         });
 }
 
+let proximaFichaBotaoEl = document.querySelector('#proxFicha');
+
+
+
+function proximaFicha() {
+    let proximaFicha = (fichaAtual + 1) % lista.length;
+    
+    lista[fichaAtual].classList.add('oculto');
+    trocarFichaBotaoEl[fichaAtual].classList.remove('fichaAtual');
+
+    fichaAtual = proximaFicha;
+    lista[fichaAtual].classList.remove('oculto');
+    trocarFichaBotaoEl[fichaAtual].classList.add('fichaAtual');
+
+    localStorage.setItem('fichaAtual', JSON.stringify(fichaAtual));
+}
+
+proximaFichaBotaoEl.addEventListener('click', proximaFicha);
