@@ -1,3 +1,4 @@
+# SilentGym
 Um projeto para um site de uma academia ficticia, chamada SilentGym.
 
 O site utiliza html, css e javascript puro e permite criar e armazenar uma lista dos exercicios para fazer em determinada ficha.
