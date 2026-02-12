@@ -4,6 +4,8 @@
     font-style: normal;
     }
 
+
+
 @media (max-width: 576px) {
 
     h1{
@@ -457,6 +459,10 @@
         letter-spacing: 2px;
         font-style: normal;
     }
+
+
+
+
 
 @media (min-width: 576px) {
 
@@ -925,5 +931,130 @@
         transform: scale(1);
     }
 
-/*! Corrigir Erro ao deitar o celular */
 
+@media (orientation: landscape) and (max-width: 900px){
+
+    #containernovoexercicio{
+        height: 100vh;
+        position: absolute;
+    }
+
+    #fundopreto{
+        position: fixed;
+        height: 100vh;
+    }
+
+    #novoexercicio{
+        flex-direction: unset;
+        flex-wrap: unset;
+        align-items: unset;
+
+        width: 80%;
+        height: min-content;
+        min-height: 0px !important;
+
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        grid-template-rows: min-content min-content min-content min-content min-content;
+
+        grid-template-areas:
+            "titulo titulo"
+            "nome foto"
+            "rep  img"
+            "carga img"
+            "final final";
+
+        gap: 10px;
+        padding: 12px;
+        box-sizing: border-box;
+
+        position: absolute;
+        top: 40px
+    }
+
+    #tituloNE{
+        grid-area: titulo;
+        text-align: center;
+        height: fit-content;
+    }
+
+    label[for="inserirnome"]{ 
+        grid-area: nome; 
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        
+    }
+    label[for="nrep"]{
+        grid-area: rep; 
+    }
+
+    label[for="kg"]{
+        grid-area: carga; 
+    }
+
+    label[for="fotoInput"]{
+        grid-area: foto;
+        align-self: start;
+        height: 60% !important;
+        align-self: center;
+    }
+
+    #previewimgdiv{
+        grid-area: img;
+    }
+
+    #fecharNE{
+        grid-area: final;
+    }
+
+
+
+
+    #novoexercicio label{
+        display: flex;
+        flex-direction: column;
+        font-size: 14px;
+        gap: 4px;
+        width: 100%;
+        height: 60%;
+        align-self: center;
+        align-items: center;
+        justify-content: center;
+        align-content: center;
+    }
+
+    #novoexercicio input{
+        width:min-content;
+        height: auto;
+        padding: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+
+    #previewimgdiv{
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        height: 90%;   
+        align-self: center;
+        justify-self: center;
+    }
+
+    #previewimg{
+        width: auto;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    #fecharNE{
+        height: 45px;
+        font-size: 30px;
+        cursor: pointer;
+        width: 100%;
+    }
+}
