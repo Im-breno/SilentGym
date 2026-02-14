@@ -91,6 +91,8 @@ let cargaExEl = document.querySelector('#kg');
 let botaoFecharEl = document.querySelector('#fecharNE');
 
 function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage) {
+        
+
         nome = nome || NomeExEl.value;
         nRep = nRep || nRepExEl.value;
         carga = carga || cargaExEl.value;
@@ -117,7 +119,9 @@ function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage) {
 
         let imgExEl = document.createElement('img');
         imgExEl.classList.add('imgexercicio');
-        imgExEl.src = urlImgAtual;  //Cria a imagem
+        
+        if(urlImgAtual != '')
+            imgExEl.src = urlImgAtual;  //Cria a imagem
         imgExEl.alt = 'imagem do exercicio';
         divImgExEl.appendChild(imgExEl);
 
