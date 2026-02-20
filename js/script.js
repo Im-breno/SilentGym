@@ -36,6 +36,7 @@ function previewImportar (e){
 
 function previewImportarRemover(){
     imgPreviewEl.src = ''   //exclui a imagem
+    urlImgAtual = ''; // Reseta a URL da imagem
     EscondeBotaoApagarImg();    //some com o botao de apagar imagem
 }
 
@@ -59,10 +60,12 @@ addExercicioBotaoEl.addEventListener('click', ()=>{
 }) // Faz o container de criar novo execicio aparecer;
 
 let fundoPretoEl = document.querySelector("#fundopreto"); // Elemento do fundo preto
+let imagemOriginal;
+
 
 fundoPretoEl.addEventListener('click', ()=>{
     if (estaEditando) {
-        criaExercicio();
+        criaExercicio(undefined, undefined, undefined, imagemOriginal, undefined, undefined);
         containerNovoExercicioEl.classList.add("oculto");
         return;
     }
@@ -266,6 +269,7 @@ lista.forEach((listaEl) => {
         // Usa a imagem do exercício para preview/para recriar
         if (imgExEl && imgExEl.src) {
             urlImgAtual = imgExEl.src;
+            imagemOriginal = imgExEl.src;
             imgPreviewEl.src = urlImgAtual;
             botaoApagarImgEl.classList.remove('oculto');
         }
