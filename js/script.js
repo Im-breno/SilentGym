@@ -36,13 +36,15 @@ function previewImportar (e){
 
 function previewImportarRemover(){
     imgPreviewEl.src = ''   //exclui a imagem
-    urlImgAtual = ''; // Reseta a URL da imagem
     EscondeBotaoApagarImg();    //some com o botao de apagar imagem
 }
 
 previewInputEl.addEventListener('change', previewImportar); //evento pro upload da imagem
 
-botaoApagarImgEl.addEventListener('click', previewImportarRemover); //evento pra remover a imagem
+botaoApagarImgEl.addEventListener('click', () => {
+    previewImportarRemover();
+    urlImgAtual = ''
+}); //evento pra remover a imagem
 
 
 
@@ -65,7 +67,7 @@ let imagemOriginal;
 
 fundoPretoEl.addEventListener('click', ()=>{
     if (estaEditando) {
-        criaExercicio(undefined, undefined, undefined, imagemOriginal, undefined, undefined);
+        criaExercicio(undefined, undefined, undefined, imagemOriginal, undefined, undefined, indiceAtual);
         containerNovoExercicioEl.classList.add("oculto");
         return;
     }
@@ -93,7 +95,7 @@ let cargaExEl = document.querySelector('#kg');
 
 let botaoFecharEl = document.querySelector('#fecharNE');
 
-function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage) {
+function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage, indice) {
         
 
         nome = nome || NomeExEl.value;
@@ -212,7 +214,8 @@ function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage) {
         
         let exercicioId;
         if(localStorage !== true) {
-            exercicioId = salvaExLocalStorage(fichaAtual, nome, nRep, carga, urlImgAtual);
+            exercicioId = salvaExLocalStorage(fichaAtual, nome, nRep, carga, urlImgAtual, indice);
+            indiceAtual = null;
             divExEl.dataset.id = exercicioId;
         }
 
@@ -221,9 +224,10 @@ function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage) {
 
 //* Cria um novo exercicio
 botaoFecharEl.addEventListener('click', () => {
-    criaExercicio(undefined, undefined, undefined, undefined, fichaAtual, false);
+    criaExercicio(undefined, undefined, undefined, undefined, fichaAtual, false, indiceAtual);
 })
 //* Cria um novo exercicio
+let indiceAtual;
 
 lista.forEach((listaEl) => {
     listaEl.addEventListener('click', (e) => {
@@ -239,6 +243,8 @@ lista.forEach((listaEl) => {
             card.remove();
         }
     });
+
+    
 
     listaEl.addEventListener('click', (e) => {
         const btnEditar = e.target.closest('.editarEx');
@@ -261,9 +267,14 @@ lista.forEach((listaEl) => {
         estaEditando = true;
 
         // Remove o exercício do localStorage antes de remover do DOM
-        const exercicioId = exercicio.dataset.id;
+        const exercicioId = parseFloat(exercicio.dataset.id);
+
         if (exercicioId) {
-            excluiExercicioEspecificoLocalStorage(parseFloat(exercicioId));
+            const lista = JSON.parse(localStorage.getItem('exercicios'));
+            indiceAtual = lista.findIndex(ex => ex.id === exercicioId);
+            
+
+            excluiExercicioEspecificoLocalStorage(exercicioId);
         }
 
         // Usa a imagem do exercício para preview/para recriar
@@ -278,6 +289,7 @@ lista.forEach((listaEl) => {
         exercicio.remove();
     });
 });
+
 
 let trocarFichaBotaoEl = document.querySelectorAll('.trocaficha');
 
@@ -303,7 +315,7 @@ for (let i = 0; i < trocarFichaBotaoEl.length; i++) {
         localStorage.setItem('fichaAtual', JSON.stringify(fichaAtual));
     })}
 
-function salvaExLocalStorage(ficha, nome, nRep, carga, urlImg) {
+function salvaExLocalStorage(ficha, nome, nRep, carga, urlImg, indice) {
 
     let exercicios = JSON.parse(localStorage.getItem('exercicios')) || [];
 
@@ -316,7 +328,12 @@ function salvaExLocalStorage(ficha, nome, nRep, carga, urlImg) {
         urlImg: urlImg
     };
 
-    exercicios.push(novo);
+    if (indice !== null){
+        exercicios.splice(indice, 0, novo);
+    }
+    else{
+        exercicios.push(novo)
+    }
 
     localStorage.setItem('exercicios', JSON.stringify(exercicios));
     return novo.id;
