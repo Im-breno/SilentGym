@@ -16,6 +16,13 @@ function EscondeBotaoApagarImg(){
     botaoApagarImgEl.classList.add('oculto');
 } 
 
+function atualizaExcluirExercicio(){
+        const temImagem = imgPreviewEl.hasAttribute("src");
+
+        if(temImagem) botaoApagarImgEl.classList.remove('oculto')
+        else botaoApagarImgEl.classList.add('oculto')
+    }
+
 function previewImportar (e){
     if (!e.target.files[0]) return;
     let arquivo = e.target.files[0]
@@ -25,9 +32,11 @@ function previewImportar (e){
         urlImgAtual = event.target.result; // Guarda a URL da imagem
 
          //importa a imagem
-        imgPreviewEl.src = urlImgAtual;
+        
+        if (urlImgAtual) imgPreviewEl.src = urlImgAtual;
 
     }
+
 
     reader.readAsDataURL(arquivo);
     
@@ -35,7 +44,7 @@ function previewImportar (e){
 }
 
 function previewImportarRemover(){
-    imgPreviewEl.src = ''   //exclui a imagem
+    imgPreviewEl.removeAttribute('src');//exclui a imagem
     EscondeBotaoApagarImg();    //some com o botao de apagar imagem
 }
 
@@ -69,14 +78,16 @@ fundoPretoEl.addEventListener('click', ()=>{
     if (estaEditando) {
         criaExercicio(undefined, undefined, undefined, imagemOriginal, undefined, undefined, indiceAtual);
         containerNovoExercicioEl.classList.add("oculto");
+        imagemOriginal = '';
         return;
     }
 
     NomeExEl.value = '';
     nRepExEl.value = '';
     cargaExEl.value = '';
-    imgPreviewEl.src = '';
+    imgPreviewEl.removeAttribute('src');
     urlImgAtual = ''; // Reseta a imagem ao cancelar
+    imagemOriginal = '';
     if(botaoApagarImgEl.classList.contains('oculto') === false) botaoApagarImgEl.classList.add('oculto');
 
     containerNovoExercicioEl.classList.toggle("oculto");
@@ -125,7 +136,7 @@ function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage, indice) {
         let imgExEl = document.createElement('img');
         imgExEl.classList.add('imgexercicio');
         
-        if(urlImgAtual != '')
+        if(urlImgAtual != undefined)
             imgExEl.src = urlImgAtual;  //Cria a imagem
         imgExEl.alt = 'imagem do exercicio';
         divImgExEl.appendChild(imgExEl);
@@ -204,8 +215,9 @@ function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage, indice) {
         nRepExEl.value = ''; // reseta as informações do editar imagem
         cargaExEl.value = '';
         
-
+        
         previewImportarRemover();
+        atualizaExcluirExercicio()
         containerNovoExercicioEl.classList.add("oculto"); // Esconde a aba de gerenciar
 
         botaoApagarImgEl.classList.add('oculto');
@@ -220,6 +232,7 @@ function criaExercicio(nome, nRep, carga, urlImg, ficha, localStorage, indice) {
         }
 
         urlImgAtual = ''; // Reseta a imagem após criar o exercício
+        imagemOriginal = undefined
 }
 
 //* Cria um novo exercicio
@@ -278,17 +291,21 @@ lista.forEach((listaEl) => {
         }
 
         // Usa a imagem do exercício para preview/para recriar
-        if (imgExEl && imgExEl.src) {
+        if (imgExEl && imgExEl.getAttribute('src')) {
             urlImgAtual = imgExEl.src;
             imagemOriginal = imgExEl.src;
             imgPreviewEl.src = urlImgAtual;
-            botaoApagarImgEl.classList.remove('oculto');
+
+            if(imgExEl.hasAttribute('src')){
+                botaoApagarImgEl.classList.remove('oculto');
+            }
         }
 
         containerNovoExercicioEl.classList.remove("oculto");
         exercicio.remove();
     });
 });
+
 
 
 let trocarFichaBotaoEl = document.querySelectorAll('.trocaficha');
