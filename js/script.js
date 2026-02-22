@@ -345,7 +345,7 @@ function salvaExLocalStorage(ficha, nome, nRep, carga, urlImg, indice) {
         urlImg: urlImg
     };
 
-    if (indice !== null){
+    if (typeof indice === 'number'){
         exercicios.splice(indice, 0, novo);
     }
     else{
